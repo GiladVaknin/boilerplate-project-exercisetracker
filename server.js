@@ -27,10 +27,14 @@ app.post("/api/exercise/new-user", (request, response) => {
     .then((savedAndFormattedUser) => {
       response.json(savedAndFormattedUser);
     })
-    .catch((error) => next(error));
+    .catch((error) => error);
 });
 
-// app.get("/api/exercise/users", (request, response) => {});
+app.get("/api/exercise/users", (request, response) => {
+  User.find({}).then((users) => {
+    response.send(users);
+  });
+});
 
 // app.post("/api/exercise/add", (request, response) => {});
 

@@ -9,9 +9,12 @@ mongoose.connect(url, {
   useCreateIndex: true,
 });
 
-const userSchema = mongoose.Schema({
-  username: { type: String, required: true },
-});
+const userSchema = mongoose.Schema(
+  {
+    username: { type: String, required: true },
+  },
+  { versionKey: false }
+);
 
 const User = mongoose.model("users", userSchema);
 
