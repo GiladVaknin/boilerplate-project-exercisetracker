@@ -57,11 +57,11 @@ app.post("/api/exercise/add", (request, response) => {
     .save()
     .then(() => {
       const addedExercise = {
-        _id: id,
         username: userToAdd.username,
-        date: date.toDateString(),
-        duration: duration,
         description: description,
+        duration: duration,
+        _id: id,
+        date: date.toDateString(),
       };
       response.json(addedExercise);
     })
