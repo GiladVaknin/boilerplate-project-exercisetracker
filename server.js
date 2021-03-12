@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const User = require("./users");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const Exercise = require("./exercises");
-const { findById } = require("./users");
+// const { findById } = require("./users");
 
 app.use(express.json());
 app.use(urlencodedParser);
@@ -49,15 +49,16 @@ app.post("/api/exercise/add", (request, response) => {
     duration: duration,
     date: date,
   });
-
-  const user = User.findById(id);
+  let userToAdd;
+  User.findById(id).then((user) => {
+    userToAdd = user;
+  });
   exercise
     .save()
-    .then((savedExercise) => savedExercise.toJSON())
-    .then((savedAndFormattedExercise) => {
+    .then(() => {
       const addedExercise = {
         _id: id,
-        userName: user.username,
+        username: userToAdd.username,
         date: date.toDateString(),
         duration: duration,
         description: description,
