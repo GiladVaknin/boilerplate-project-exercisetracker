@@ -1,6 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const url = process.env.MONGODB_URI;
+const uniqueValidator = require("mongoose-unique-validator");
 
 mongoose.connect(url, {
   useNewUrlParser: true,
@@ -15,6 +16,8 @@ const userSchema = mongoose.Schema(
   },
   { versionKey: false }
 );
+
+userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model("users", userSchema);
 
