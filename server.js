@@ -50,23 +50,34 @@ app.post("/api/exercise/add", (request, response) => {
     date: date,
   });
   let userToAdd;
-  User.findById(id).then((user) => {
-    userToAdd = user;
-  });
-  exercise
-    .save()
-    .then(() => {
-      const addedExercise = {
-        username: userToAdd.username,
-        description: description,
-        duration: duration,
-        _id: id,
-        date: date.toDateString(),
-      };
-      response.json(addedExercise);
+  User.findByIdAndUpdate(
+    id,
+    {
+      description: description,
+      duration: duration,
+      date: date.toDateString(),
+    },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      response.json(updatedUser);
     })
     .catch((error) => error);
 });
+//   exercise
+//     .save()
+//     .then(() => {
+//       const addedExercise = {
+//         username: userToAdd.username,
+//         description: description,
+//         duration: duration,
+//         _id: id,
+//         date: date.toDateString(),
+//       };
+//       response.json(addedExercise);
+//     })
+//     .catch((error) => error);
+// });
 
 // app.get("/api/exercise/log", (request, response) => {});
 
