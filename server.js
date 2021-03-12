@@ -41,7 +41,7 @@ app.get("/api/exercise/users", (request, response) => {
 app.post("/api/exercise/add", (request, response) => {
   const id = request.body.userId;
   const description = request.body.description;
-  const duration = request.body.duration;
+  const duration = Number(request.body.duration);
   const date = request.body.date || new Date();
   const exercise = new Exercise({
     userId: id,
