@@ -11,9 +11,6 @@ mongoose.connect(url, {
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
-  date: { type: String },
-  duration: { type: Number },
-  description: { type: String },
   log: [{}],
 });
 

@@ -46,14 +46,17 @@ app.post("/api/exercise/add", async (request, response) => {
   } else {
     date = new Date(request.body.date);
   }
+
   const userLog = await User.findById(id).then((user) => {
     return user.log;
   });
+
   userLog.unshift({
     duration: Number(request.body.duration),
     description: request.body.description,
     date: date.toDateString(),
   });
+
   User.findByIdAndUpdate(
     id,
     {
@@ -76,10 +79,45 @@ app.post("/api/exercise/add", async (request, response) => {
 
 app.get(`/api/exercise/log`, (request, response) => {
   let id = request.query.userId;
-  console.log(id);
+  let from = request.query.from;
+  let limit = request.query.limit;
+  let to = request.query.to;
+
   User.findById(id).then((user) => {
-    console.log(user);
-    response.json(user);
+    let logs = user.log;
+
+    if (from) {
+      from = new Date(from);
+      console.log(from);
+      logs = logs.filter((log) => {
+        console.log(new Date(log.date));
+        return new Date(log.date) >= from;
+      });
+    }
+
+    if (to) {
+      to = new Date(to);
+      logs = logs.filter((log) => {
+        return new Date(log.date).getTime() <= to.getTime();
+      });
+    }
+
+    if (limit) {
+      limit = Number(limit);
+      console.log(limit);
+      let limitedLogs = [];
+      for (let i = 0; i < limit; i++) {
+        limitedLogs.push(logs.pop());
+      }
+      logs = limitedLogs;
+    }
+
+    const res = {
+      _id: user.id,
+      log: logs,
+      count: user.log.length,
+    };
+    response.json(res);
   });
 });
 
