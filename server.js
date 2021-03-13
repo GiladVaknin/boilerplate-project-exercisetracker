@@ -88,9 +88,7 @@ app.get(`/api/exercise/log`, (request, response) => {
 
     if (from) {
       from = new Date(from);
-      console.log(from);
       logs = logs.filter((log) => {
-        console.log(new Date(log.date));
         return new Date(log.date) >= from;
       });
     }
@@ -104,7 +102,6 @@ app.get(`/api/exercise/log`, (request, response) => {
 
     if (limit) {
       limit = Number(limit);
-      console.log(limit);
       let limitedLogs = [];
       for (let i = 0; i < limit; i++) {
         limitedLogs.push(logs.pop());
@@ -117,6 +114,7 @@ app.get(`/api/exercise/log`, (request, response) => {
       log: logs,
       count: user.log.length,
     };
+
     response.json(res);
   });
 });
